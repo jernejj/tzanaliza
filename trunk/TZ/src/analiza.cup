@@ -1,0 +1,49 @@
+import java.util.*;
+import java_cup.runtime.*;
+
+
+parser code
+{:
+
+	public void syntax_error(Symbol cur_token) {
+		Report.error ("Syntax error near word '" + (String)(cur_token.value) + "'.", cur_token.left, cur_token.right, 1);
+	}
+
+:}
+
+terminal		String	IDENTIFIER;
+
+terminal		AND, NOT, OR;
+
+terminal		LPAREN, RPAREN;
+
+terminal		UNOT;
+
+non terminal	 expr; 
+non terminal 	 expr_aux;
+
+
+precedence left	OR;
+precedence left	AND;
+precedence left	UNOT;
+
+
+start with		expr;
+
+expr
+	::= 
+		IDENTIFIER
+		
+	|	expr OR expr
+	
+	| 	expr AND expr
+	
+	|	expr_aux 	
+		
+	| 	NOT expr_aux 	%prec UNOT
+		
+	;
+	
+expr_aux 
+	::= LPAREN expr RPAREN
+	;	
