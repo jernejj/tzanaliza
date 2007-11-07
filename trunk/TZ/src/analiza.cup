@@ -1,7 +1,7 @@
 
 parser code  {: 
   public Absyn.Exp parseResult;
-
+  
   public void syntax_error(java_cup.runtime.Symbol current) {
    report_error("Syntax error (" + current.sym + ")", current);
   }
