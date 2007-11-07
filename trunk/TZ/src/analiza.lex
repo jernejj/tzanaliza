@@ -47,13 +47,12 @@ import java.io.IOException;
 %eofval}
 
 IDENTIFIER				= [A-Za-z_][A-Za-z0-9_]*
-PRINTABLE_CHAR			= [ -~]
 
 
 %%
 
-/* white space */
-<YYINITIAL> [ \t\n\r]+		{ /* ignore */	}
+/* white space */ 
+<YYINITIAL> [ \t\n\r]+		{ /* ignore */	} 
 
 /* keywords */ 
 <YYINITIAL> "and"			{	return sym(AnalizaSym.AND); }
