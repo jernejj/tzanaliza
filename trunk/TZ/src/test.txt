@@ -1,1 +1,1 @@
-x1 or ((x2 and x3) or x4) and neg(x5)
+x1 or ((x2 and x3) or x4) and neg(x5 or (x6 and x7))
