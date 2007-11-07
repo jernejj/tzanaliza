@@ -1,75 +1,68 @@
-import java_cup.runtime.*; 
-import java.io.IOException;
+//import ErrorMsg.ErrorMsg;
 
 
+%% 
 
-
-%%
-
-%class Lexer
-
-%line
-%column
-
-%public 
-%final
-
-%cupsym AnalizaSym
 %cup
+%char
 
 %{
-	int comment_depth = 0;
-	int string_depth = 0;
-	final int OK = 0;
-	StringBuffer string = new StringBuffer();
 
-	private Symbol sym(int type)
-	{
-		return new Symbol(type, yyline+1, yycolumn+1, yytext());
-	}
-	
-	private Symbol sym(int type, Object value)
-	{
-		return new Symbol(type, yyline+1, yycolumn+1, value);
-	}
+StringBuffer string = new StringBuffer();
+
+private void err(int pos, String s) {
+  errorMsg.error(pos,s);
+}
+
+private void err(String s) {
+  err(yychar,s);
+}
+
+private java_cup.runtime.Symbol tok(int kind, Object value) {
+    return new java_cup.runtime.Symbol(kind, yychar, yychar+yylength(), value);
+}
+
+private ErrorMsg.ErrorMsg errorMsg;
+
+Yylex(java.io.InputStream s, ErrorMsg.ErrorMsg e) {
+  this(s);
+  errorMsg=e;
+}
+
+
+
+
+
+
 %}
 
-%eofval{
-	if(comment_depth != OK) {
-		return sym(AnalizaSym.error);
-	}
-	
-	if(string_depth != OK) {
-		return sym(AnalizaSym.error);
-	}
-	
-	return sym(AnalizaSym.EOF);
-%eofval}
 
-IDENTIFIER				= [A-Za-z_][A-Za-z0-9_]*
+ 
+ControlChar = \^[@ABCDEFGHIJKLMNOPQRSTUVWXYZ\[\\\]\^_\?] 
+Identifier = [a-zA-Z][a-zA-Z0-9_]* 
+
 
 
 %%
-
-/* white space */ 
-<YYINITIAL> [ \t\n\r]+		{ /* ignore */	} 
-
-/* keywords */ 
-<YYINITIAL> "and"			{	return sym(AnalizaSym.AND); }
-<YYINITIAL> "not"			{	return sym(AnalizaSym.NOT); }
-<YYINITIAL> "or"			{	return sym(AnalizaSym.OR); }
-
-/* symbols */
-<YYINITIAL> "("				{	return sym(AnalizaSym.LPAREN); } 
-<YYINITIAL> ")"				{	return sym(AnalizaSym.RPAREN); }
-
-
-<YYINITIAL> { 
-
-	{IDENTIFIER}			{	return sym(AnalizaSym.IDENTIFIER); }
+<YYINITIAL>{
+	" "			{ /* ignore */ }
+	\r|\n|\r\n	{ }
+	[\t\f]		{ /* ignore */ }
 	
-	.						{	return sym(AnalizaSym.error); } 
+	"("		{return tok(sym.LPAREN,null); }
+	")"		{return tok(sym.RPAREN,null); }
+	"and"		{return tok(sym.AND,null); }
+	"or"		{return tok(sym.OR,null); }
+	"neg"		{return tok(sym.NOT,null); }
+}	
+
 	
-	<<EOF>>					{	return sym(AnalizaSym.EOF); }  
-	
-}
+	{Identifier}	{return tok(sym.ID,yytext().toString() ); }
+
+
+
+
+
+
+
+
