@@ -15,6 +15,14 @@ public class NodeVar extends Node{
 		this.var = new Variable(var);
 	}
 	
+	public NodeVar(Variable var){
+		this.left = null;
+		this.right = null;
+		this.parent = null;
+		this.var = var;
+	}
+	
+	
 	public String getVarName() {
 		return var.getName();
 	}
