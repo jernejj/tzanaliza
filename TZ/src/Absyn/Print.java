@@ -76,11 +76,6 @@ public class Print {
 
   
 
-  void prExp(WhileExp e, int d) {
-    sayln("WhileExp(");
-    prExp(e.test, d+1); sayln(",");
-    prExp(e.body, d+1); sayln(")");
-  }
 
  
 
@@ -92,10 +87,7 @@ public class Print {
 
     else if (e instanceof IntExp) prExp((IntExp) e, d);
 
-
     else if (e instanceof SeqExp) prExp((SeqExp) e, d);
-
-    else if (e instanceof WhileExp) prExp((WhileExp) e, d);
 
     else throw new Error("Print.prExp");
   }

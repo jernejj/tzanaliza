@@ -19,6 +19,11 @@ public class NodeOp extends Node{
 		return op.getOp();
 	}
 	
+	public void setOp(char p){
+		
+		this.op = new Operator(p);
+	}
+	
 	public void setLeft(Node node) {
 		this.left = node;
 	}
