@@ -1,16 +1,14 @@
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Vector;
 
 public class Main {
 
 	public static Hashtable<String, Variable> variable = new Hashtable<String, Variable>();
 	public static String[] sprem={"x1", "x2", "x3" };
-	public static double[] ver_sprem = {0.5, 0.5, 0.7}; //verjestno da je Xi=1
+	public static float[] ver_sprem = {(float)0.5, (float)0.5, (float)0.7}; //verjestno da je Xi=1
+	public static int[] zac_vre = {1, 0, 1};
+	public static float apr_ver;
 
 	public static void main(String argv[])  {
 		String filename = argv[0];
@@ -35,11 +33,15 @@ public class Main {
 			nastaviVrednosti(ime, 0);
 		}
 		
-		short[][] tabela = generate(4);
+	//	short[][] tabela = generate(4);
 	//	print(tabela);
 		
+		apr_ver = aprverjetnost(drevo.root);
+		
+		float[] delte = izracunajDelte(drevo.root);
+		
 		System.out.println("naj bi bilo :P");
-		System.out.print("vrednost je: "+aprverjetnost(drevo.root));
+		System.out.print("vrednost je: "+apr_ver);
 
 	}
 
@@ -228,16 +230,16 @@ public class Main {
 	}
 	
 	/**
-	 * Vrne apriorno vrednost logičnega izraza. Rezultat je tipa double
+	 * Vrne apriorno vrednost logičnega izraza. Rezultat je tipa float
 	 * 
 	 * @param node prvo vozlišče drevesa
-	 * @return rezultat tipa double, ki predstavlja apriorno verjetnost
+	 * @return rezultat tipa float, ki predstavlja apriorno verjetnost
 	 */
 	
-	public static double aprverjetnost(NodeOp nod){
+	public static float aprverjetnost(NodeOp nod){
 		NodeOp node = nod;
 		int st_spremenljivk = variable.size();
-		double rezultat = 0;
+		float rezultat = 0;
 		short[][] tabela = generate(st_spremenljivk);
 		int st_kom = tabela[1].length;			//stevilo kombinacij
 		int[] rez_verjetnosti = new int[st_kom];
@@ -245,7 +247,7 @@ public class Main {
 		//izracun verjetnosti za vse kombinacije
 		for(int rez_i = 0; rez_i < st_kom; rez_i++){
 			//nastavitev vrednosti spremenljivkam
-			double tmp_ver = 1;
+			float tmp_ver = 1;
 			for(int i=0; i<sprem.length; i++){
 				tmp_ver*= (tabela[i][rez_i] == 1 ) ? ver_sprem[i] : (1-ver_sprem[i]);
 				variable.get(sprem[i]).setValue(tabela[i][rez_i]);
@@ -265,6 +267,106 @@ public class Main {
 	}
 	
 	/**
+	 * Izracuna delte za podani koren drevesa node
+	 * @param node koren drevesa
+	 * @return delte float[], izracunane delte.
+	 */
+	
+	public static float[] izracunajDelte(NodeOp node){
+		int st_dlt = 0;
+		for(int i = 1; i <= sprem.length; i++){
+			st_dlt += binom(sprem.length, i);
+		}
+		float[] delte = new float[st_dlt];
+		
+		int poz=0;
+		for(int i = 1; i <= sprem.length; i++){
+			
+			int[] indeksi;
+			CombinationGenerator x = new CombinationGenerator (sprem.length, i); 
+			while(x.hasMore()){
+				indeksi = x.getNext();
+				Vector<String> fiksirane = new Vector<String>();
+				for(int k=0; k<indeksi.length; k++){
+					fiksirane.add(sprem[indeksi[k]]);
+				}
+				delte[poz] = izr_ver(fiksirane, node) -  apr_ver;
+				poz++;
+			}
+		}
+		
+		return delte;
+		
+	}
+	
+	/**
+	 * Funkcija izr_ver, izracuna delta' za fiksirane spremenljivke podane v stat.
+	 * 
+	 * @param stat spremenljivke ki jih fiksiramo, tipa Vector<String>
+	 * @param node koren drevesa
+	 * @return rezultat delta'
+	 */
+	
+	public static float izr_ver(Vector<String> stat, NodeOp node){
+		int st_spremenljivk = variable.size()-stat.size();
+		float rezultat = 0;
+		
+		
+		int rez_verjetnosti;
+		String[] spremenljivke = new String[st_spremenljivk];
+		float[] tmp_ver_spr = new float[st_spremenljivk];
+		
+		/* spremenljivke ki ne fiksiramo si shranimo v zacasno tabelo spremenljivke, 
+		 * ter ob tem tudi njihove verjetnosti da je ta spremenljivka 1
+		 */
+		int j=0;
+		for(int i = 0; i < sprem.length; i++){
+			
+			if(!stat.contains(sprem[i])){
+				spremenljivke[j]=sprem[i];
+				tmp_ver_spr[j]=ver_sprem[i];
+				j++;
+			}
+			else{
+				variable.get(sprem[i]).setValue(zac_vre[i]);
+			}
+			
+		}
+		
+		//fiksiramo vse spremenljivke
+		if(st_spremenljivk==0){
+			rezultat = izracunaj(node);
+			return rezultat;
+		}
+		
+		short[][] tabela = generate(st_spremenljivk);
+		int st_kom = tabela[0].length;			//stevilo kombinacij
+		
+		//izracun verjetnosti za vse kombinacije
+		for(int rez_i = 0; rez_i < st_kom; rez_i++){
+			//nastavitev vrednosti spremenljivkam
+			float tmp_ver = 1;
+			for(int i=0; i<spremenljivke.length; i++){
+				
+				tmp_ver*= (tabela[i][rez_i] == 1 ) ? tmp_ver_spr[i] : (1-tmp_ver_spr[i]);
+				variable.get(spremenljivke[i]).setValue(tabela[i][rez_i]);
+				
+			}
+			rez_verjetnosti=izracunaj(node);
+			
+		//	System.out.println(rez_verjetnosti[rez_i]);
+			
+			rezultat += (rez_verjetnosti*tmp_ver);
+				
+		}
+		
+		
+		return rezultat;
+
+	}
+	
+	
+	/**
 	 * Funkcija generate sprejme argument number tipa int, kateri predstavlja
 	 * število logičnih spremenljivk. Kot rezultat pa vrne
 	 * tabela tipa short[][], kjer so shranjene vse mozne kombinacije logičnih spremenljivk.
@@ -276,7 +378,7 @@ public class Main {
 	
 	public static short[][] generate(int number) {
 		int n = number;
-		short[][] tabela = new short[n][(int)Math.pow((double)2,(double)n)];
+		short[][] tabela = new short[n][(int)Math.pow((float)2,(float)n)];
 		String bin="";
 
 		int indeks = 0;
@@ -298,6 +400,18 @@ public class Main {
 			}
 			System.out.println("");
 		}
+	}
+	
+	private static int binom(int n, int r){
+		int[] b = new int[n+1];
+		b[0] = 1;
+		for(int i = 1; i <= n; i++){
+			b[i] = 1;
+			for(int j = i-1; j > 0; j--){
+				b[j] += b[j+1];
+			}
+		}
+		return b[r];
 	}
 
 }
