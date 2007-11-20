@@ -1,14 +1,20 @@
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.Vector;
+
+
 
 public class Main {
 
 	public static Hashtable<String, Variable> variable = new Hashtable<String, Variable>();
 	public static String[] sprem={"x1", "x2", "x3" };
-	public static float[] ver_sprem = {(float)0.5, (float)0.5, (float)0.7}; //verjestno da je Xi=1
-	public static int[] zac_vre = {1, 0, 1};
+	public static float[] ver_sprem = {(float)0.5, (float)0.5, (float)0.5}; //verjestno da je Xi=1
+	public static int[] zac_vre = {1, 1, 0};
 	public static float apr_ver;
+	public static Vector<Delta> delte = new Vector<Delta>();
+	public static Vector<Interakcija> interakcije = new Vector<Interakcija>();
+	public static Vector<Prispevek> prispevki = new Vector<Prispevek>();
 
 	public static void main(String argv[])  {
 		String filename = argv[0];
@@ -38,7 +44,9 @@ public class Main {
 		
 		apr_ver = aprverjetnost(drevo.root);
 		
-		float[] delte = izracunajDelte(drevo.root);
+		izracunajDelte(drevo.root);
+		izr_Interakcije();
+		izr_Prispevke();
 		
 		System.out.println("naj bi bilo :P");
 		System.out.print("vrednost je: "+apr_ver);
@@ -267,19 +275,20 @@ public class Main {
 	}
 	
 	/**
-	 * Izracuna delte za podani koren drevesa node
+	 * Izracuna delte za podani koren drevesa node, v Vector delte shrani delte objekta Delta
+	 * 
 	 * @param node koren drevesa
-	 * @return delte float[], izracunane delte.
+	 *
 	 */
 	
-	public static float[] izracunajDelte(NodeOp node){
+	public static void izracunajDelte(NodeOp node){
 		int st_dlt = 0;
 		for(int i = 1; i <= sprem.length; i++){
 			st_dlt += binom(sprem.length, i);
 		}
-		float[] delte = new float[st_dlt];
+	//	float[] delte = new float[st_dlt];
 		
-		int poz=0;
+	//	int poz=0;
 		for(int i = 1; i <= sprem.length; i++){
 			
 			int[] indeksi;
@@ -287,15 +296,17 @@ public class Main {
 			while(x.hasMore()){
 				indeksi = x.getNext();
 				Vector<String> fiksirane = new Vector<String>();
+				String ime="";
 				for(int k=0; k<indeksi.length; k++){
 					fiksirane.add(sprem[indeksi[k]]);
+					ime +=sprem[indeksi[k]];
 				}
-				delte[poz] = izr_ver(fiksirane, node) -  apr_ver;
-				poz++;
+				Delta delta = new Delta(ime,izr_ver(fiksirane, node) -  apr_ver);
+				delte.add(delta);
+			//	delte[poz] = izr_ver(fiksirane, node) -  apr_ver;
+			//	poz++;
 			}
 		}
-		
-		return delte;
 		
 	}
 	
@@ -391,6 +402,119 @@ public class Main {
 		
 		return tabela;
 	
+	}
+	
+	public static void izr_Interakcije(){
+		
+		for(int i = 0; i < sprem.length; i++ ){
+			interakcije.add( new Interakcija(sprem[i],getDelta(sprem[i]).getVr(),1) );
+		}
+		
+		for (int i = 2; i <= sprem.length; i++){
+			
+			CombinationGenerator gen = new CombinationGenerator(sprem.length, i);
+			
+			while(gen.hasMore()){
+				int[] indeksi = gen.getNext();
+				String ime="";
+				String[] spremTmp = new String[indeksi.length];
+				for(int j=0; j < indeksi.length; j++){
+					ime += sprem[indeksi[j]];
+					spremTmp[j] = sprem[indeksi[j]];
+				}
+				
+				float vsotaI = (float)0.0;
+				for(int k = 1; k < indeksi.length; k++){
+					CombinationGenerator cg = new CombinationGenerator(indeksi.length, k);
+					
+					while(cg.hasMore()){
+						int[] indx = cg.getNext();
+						String imeTmp="";
+						for(int j = 0; j < indx.length; j++){
+							imeTmp += spremTmp[indx[j]];
+						}
+						vsotaI += getInter(imeTmp).getVr();	
+					}
+				}
+				
+				float vrInter = getDelta(ime).getVr() - vsotaI;
+				Interakcija inter = new Interakcija(ime, vrInter, indeksi.length);
+				interakcije.add(inter);
+				
+			}
+			
+		}
+	}
+	
+	
+	public static void izr_Prispevke(){
+		
+		for(int i = 0; i < sprem.length; i++){
+			String ime = sprem[i];
+			
+			float vrednost = (float)0.0;
+			Vector<Interakcija> inter = getInterContainIme(ime);
+			float[] tmpVrednost = new float[sprem.length];
+			int[] tmpStevilo = new int[sprem.length];
+
+			for(Interakcija interTmp : inter){
+				tmpVrednost[interTmp.getSt_sprem()-1] += interTmp.getVr();
+				tmpStevilo[interTmp.getSt_sprem()-1] = interTmp.getSt_sprem();
+			}
+			
+			for(int j = 0; j < tmpStevilo.length; j++){
+				vrednost += tmpVrednost[j]/tmpStevilo[j];
+			}
+			
+			
+			prispevki.add(new Prispevek(ime,vrednost));
+			
+		}
+		
+	}
+	
+	public static Vector<Interakcija> getInterContainIme(String ime){
+		
+		Vector<Interakcija> inter = new Vector<Interakcija>();
+		
+		for(Interakcija interTmp : interakcije){
+			if( interTmp.getIme().contains(ime) )
+				inter.add(interTmp);
+				
+		}
+		
+		return inter;
+		
+	}
+	
+	/**
+	 * Funckija getDelta vrne delto objekta Delta za paramater ime
+	 * @param ime parameter tipa String
+	 * @return delta tipa Delta
+	 */
+	
+	public static Delta getDelta(String ime ){
+		for(Delta deltaTmp : delte) {
+			if(deltaTmp.getIme().equals(ime))
+				return deltaTmp;
+		}
+			
+		return null;
+	}
+	
+	/**
+	 * Funkcija getInter vrne interakcijo iz vektorja interakcija za parameter <B>ime</B>
+	 * @param ime parameter tipa String
+	 * @return interTmp iz vektorja interakcije, ki ima ime <B>ime</B>;
+	 */
+	
+	public static Interakcija getInter(String ime){
+		for(Interakcija interTmp : interakcije)
+			if(interTmp.getIme().equals(ime))
+				return interTmp;
+		
+		return null;
+		
 	}
 	
 	private static void print(short[][] t) {
