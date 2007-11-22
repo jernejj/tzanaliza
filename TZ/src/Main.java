@@ -1,6 +1,3 @@
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.Vector;
 
 
@@ -20,11 +17,11 @@ public class Main {
 		Izracun izracun = new Izracun(spremenljivke, verjetnosti, zac_vr, parse.absyn );
 		
 		Vector<Prispevek> pris = izracun.getPrispevek();
+		Izpis izpis = new Izpis(izracun);
+		izpis.izpisi("izpis.txt");
 		
-		System.out.println("done");
-		
-	//	short[][] tabela = generate(4);
-	//	print(tabela);
+//		System.out.println("done");
+
 		
 		
 
