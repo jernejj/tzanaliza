@@ -1,4 +1,4 @@
-//import ErrorMsg.ErrorMsg;
+import java.util.Vector;
 
 
 %% 
@@ -8,7 +8,7 @@
 
 %{
 
-StringBuffer string = new StringBuffer();
+public Vector<String> spremenljivke = new Vector<String>();
 
 
 
@@ -48,7 +48,7 @@ Identifier = [a-zA-Z][a-zA-Z0-9_]*
 }	
 
 	
-	{Identifier}	{return tok(sym.ID,yytext().toString() ); }
+	{Identifier}	{spremenljivke.add(yytext().toString()); return tok(sym.ID,yytext().toString() ); }
 
 
 

@@ -1,8 +1,11 @@
+import java.util.Vector;
+
 
 public class Parse {
 
   public ErrorMsg.ErrorMsg errorMsg;
   public Absyn.Exp absyn;
+  public Vector<String> spremenljivke;
 
   public Parse(String izraz) {
       {java.io.Reader inp;
@@ -10,7 +13,8 @@ public class Parse {
        } catch (Exception e) {
 	 throw new Error("Ni izraza/napaka v izrazu: " + izraz);
        }
-       Grm parser = new Grm(new Yylex(inp));
+       Yylex yylex = new Yylex(inp);
+       Grm parser = new Grm(yylex);
       /* open input files, etc. here */
 
       try {
@@ -23,6 +27,7 @@ public class Parse {
          try {inp.close();} catch (java.io.IOException e) {}
       }
       absyn=parser.parseResult;
+      spremenljivke = yylex.spremenljivke;
 //      Absyn.Print printer = new Absyn.Print(System.out);
 //      printer.prExp(absyn,0);
 //      System.out.println("\n");

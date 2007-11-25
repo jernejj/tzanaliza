@@ -11,7 +11,12 @@ public class Main {
 		
 		Absyn.OpExp op = null;
 		
-		String[] spremenljivke = { "x1", "x2", "x3" };
+		String[] spremenljivke = new String[parse.spremenljivke.size()];
+		int i=0;
+		for(String spremTmp : parse.spremenljivke){
+			spremenljivke[i]=spremTmp;
+			i++;
+		}
 		float[] verjetnosti = { (float)0.5, (float)0.5, (float)0.5};
 		int[]	zac_vr = { 1,1,0};
 		
