@@ -1,6 +1,5 @@
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-import java.io.IOException;
 
 /**
  * Objekt, ki vsebuje funkcijo za izpis delt, interakcij ter prispevkov

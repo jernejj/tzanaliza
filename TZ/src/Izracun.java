@@ -77,8 +77,9 @@ public class Izracun {
 				Absyn.VarExp var = (Absyn.VarExp)exp.left;
 				NodeVar tmpNV;
 				String ime =  ((Absyn.SimpleVar)var.var).name.toString() ;
-				if(variable.containsKey(ime))
+				if(variable.containsKey(ime)){
 					tmpNV = new NodeVar(variable.get(ime));
+				}
 				else
 				{
 					Variable v = new Variable(ime);
@@ -98,8 +99,9 @@ public class Izracun {
 				Absyn.VarExp var = (Absyn.VarExp)exp.right;
 				NodeVar tmpNV;
 				String ime =  ((Absyn.SimpleVar)var.var).name.toString() ;
-				if(variable.containsKey(ime))
+				if(variable.containsKey(ime)){
 					tmpNV = new NodeVar(variable.get(ime));
+				}
 				else{
 					Variable v = new Variable(ime);
 					variable.put(ime, v);
@@ -149,8 +151,9 @@ public class Izracun {
 				Absyn.VarExp var = (Absyn.VarExp)exp.left;
 				NodeVar tmpNV;
 				String ime =  ((Absyn.SimpleVar)var.var).name.toString() ;
-				if(variable.containsKey(ime))
+				if(variable.containsKey(ime)){
 					tmpNV = new NodeVar(variable.get(ime));
+				}
 				else
 				{
 					Variable v = new Variable(ime);
@@ -170,8 +173,9 @@ public class Izracun {
 				Absyn.VarExp var = (Absyn.VarExp)exp.right;
 				NodeVar tmpNV;
 				String ime =  ((Absyn.SimpleVar)var.var).name.toString() ;
-				if(variable.containsKey(ime))
+				if(variable.containsKey(ime)){
 					tmpNV = new NodeVar(variable.get(ime));
+				}
 				else
 				{
 					Variable v = new Variable(ime);
