@@ -1,5 +1,4 @@
 
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JButton;
@@ -342,5 +341,6 @@ public class Okno extends javax.swing.JFrame {
 		}
 		return jLabel5;
 	}
+	
 
 }

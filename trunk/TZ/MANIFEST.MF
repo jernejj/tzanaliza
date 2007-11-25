@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Class-Path: java-cup-11a-runtime.jar
+Main-Class: Okno
+
