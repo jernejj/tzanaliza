@@ -48,7 +48,10 @@ Identifier = [a-zA-Z][a-zA-Z0-9_]*
 }	
 
 	
-	{Identifier}	{spremenljivke.add(yytext().toString()); return tok(sym.ID,yytext().toString() ); }
+	{Identifier}	{ 	if(!spremenljivke.contains(yytext().toString())){
+							spremenljivke.add(yytext().toString());
+						} 
+					  	return tok(sym.ID,yytext().toString() ); }
 
 
 

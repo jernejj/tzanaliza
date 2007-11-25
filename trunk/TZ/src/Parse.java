@@ -3,7 +3,6 @@ import java.util.Vector;
 
 public class Parse {
 
-  public ErrorMsg.ErrorMsg errorMsg;
   public Absyn.Exp absyn;
   public Vector<String> spremenljivke;
 
