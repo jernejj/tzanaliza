@@ -265,7 +265,7 @@ public class Izracun {
 		int st_spremenljivk = variable.size();
 		float rezultat = 0;
 		short[][] tabela = generate(st_spremenljivk);
-		int st_kom = tabela[1].length;			//stevilo kombinacij
+		int st_kom = tabela[0].length;			//stevilo kombinacij
 		int[] rez_verjetnosti = new int[st_kom];
 		
 		//izracun verjetnosti za vse kombinacije
