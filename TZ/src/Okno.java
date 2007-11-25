@@ -14,18 +14,20 @@ import javax.swing.SwingUtilities;
 
 
 
+
+
 /**
- * This code was edited or generated using CloudGarden's Jigloo
- * SWT/Swing GUI Builder, which is free for non-commercial
- * use. If Jigloo is being used commercially (ie, by a corporation,
- * company or business for any purpose whatever) then you
- * should purchase a license for each developer using Jigloo.
- * Please visit www.cloudgarden.com for details.
- * Use of Jigloo implies acceptance of these licensing terms.
- * A COMMERCIAL LICENSE HAS NOT BEEN PURCHASED FOR
- * THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
- * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
- */
+* This code was edited or generated using CloudGarden's Jigloo
+* SWT/Swing GUI Builder, which is free for non-commercial
+* use. If Jigloo is being used commercially (ie, by a corporation,
+* company or business for any purpose whatever) then you
+* should purchase a license for each developer using Jigloo.
+* Please visit www.cloudgarden.com for details.
+* Use of Jigloo implies acceptance of these licensing terms.
+* A COMMERCIAL LICENSE HAS NOT BEEN PURCHASED FOR
+* THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
+* LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
+*/
 public class Okno extends javax.swing.JFrame {
 
 	{
@@ -41,9 +43,11 @@ public class Okno extends javax.swing.JFrame {
 	private JButton jButton2;
 	private JLabel jLabel2;
 	private JButton jButton1;
-	private JTextField jTextField4;
-	private JTextField jTextField3;
 	private JLabel jLabel4;
+	private JLabel jLabel5;
+	private JLabel[] labelaSprem;
+	private JTextField[] textFieldVer;
+	private JTextField[] textFieldVr;
 	private JButton Izhod;
 	private JButton Zbrisi;
 	private JLabel jLabel3;
@@ -102,8 +106,30 @@ public class Okno extends javax.swing.JFrame {
 			jDialog1.getContentPane().add(getJTextField2());
 			jDialog1.getContentPane().add(getJLabel3());
 			jDialog1.getContentPane().add(getJLabel4());
-			jDialog1.getContentPane().add(getJTextField3());
-			jDialog1.getContentPane().add(getJTextField4());
+			jDialog1.getContentPane().add(getJLabel5());
+
+			int stSprem = spremenljivke.length;
+			labelaSprem = new JLabel[stSprem];
+			textFieldVer = new JTextField[stSprem];
+			textFieldVr = new JTextField[stSprem];
+			for(int i = 0; i < stSprem; i++){
+				labelaSprem[i] = new JLabel();
+				labelaSprem[i].setText(spremenljivke[i]);
+				labelaSprem[i].setBounds(76+i*29, 48, 23, 14);
+				
+				textFieldVer[i] = new JTextField();
+				textFieldVer[i].setText("0.5");
+				textFieldVer[i].setBounds(76+i*29, 65, 23, 20);
+				
+				textFieldVr[i] = new JTextField();
+				textFieldVr[i].setBounds(76+i*29, 91, 23, 20);
+				
+				jDialog1.getContentPane().add(labelaSprem[i]);
+				jDialog1.getContentPane().add(textFieldVer[i]);
+				jDialog1.getContentPane().add(textFieldVr[i]);
+
+			}
+			
 			jDialog1.setSize(327, 190);
 		}
 		return jDialog1;
@@ -195,8 +221,9 @@ public class Okno extends javax.swing.JFrame {
 	private JTextField getJTextField2() {
 		if(jTextField2 == null) {
 			jTextField2 = new JTextField();
-			jTextField2.setBounds(70, 8, 107, 18);
-			jTextField2.setToolTipText("Vnesi ime datoteke, privzeto ime je out.txt");
+			jTextField2.setBounds(74, 9, 52, 20);
+			jTextField2.setToolTipText("Vnesi ime datoteke, privzeto ime je izpis.txt");
+			jTextField2.setText("izpis.txt");
 		}
 		return jTextField2;
 	}
@@ -205,7 +232,7 @@ public class Okno extends javax.swing.JFrame {
 		if(jLabel3 == null) {
 			jLabel3 = new JLabel();
 			jLabel3.setText("Verjetnosti:");
-			jLabel3.setBounds(0, 32, 56, 14);
+			jLabel3.setBounds(0, 68, 56, 14);
 		}
 		return jLabel3;
 	}
@@ -214,76 +241,55 @@ public class Okno extends javax.swing.JFrame {
 		if(jLabel4 == null) {
 			jLabel4 = new JLabel();
 			jLabel4.setText("Zac. vred.:");
-			jLabel4.setBounds(5, 52, 54, 14);
+			jLabel4.setBounds(0, 93, 54, 14);
 		}
 		return jLabel4;
-	}
-
-	private JTextField getJTextField3() {
-		if(jTextField3 == null) {
-			jTextField3 = new JTextField();
-			jTextField3.setBounds(70, 29, 107, 17);
-			jTextField3.setToolTipText("Vnesi verjetnosti locene z presledki");
-		}
-		return jTextField3;
-	}
-
-	private JTextField getJTextField4() {
-		if(jTextField4 == null) {
-			jTextField4 = new JTextField();
-			jTextField4.setBounds(69, 49, 108, 17);
-			jTextField4.setToolTipText("Vnesi zacetne vrednosti spremenljivk, locene z presledki");
-		}
-		return jTextField4;
 	}
 
 	private void jButton1MouseClicked(MouseEvent evt) { //button v jdialog
 		boolean ok = true;
 		filename = jTextField2.getText();
 		if(filename.isEmpty()){
-			filename = "out.txt";
+			filename = "izpis.txt";
 		}
-
-		String[] ver = jTextField3.getText().split(" ");
-		if(ver.length != spremenljivke.length){
-			JOptionPane.showMessageDialog(this, "Vnesti moras :"+spremenljivke.length+" verjetnosti", "Vnesel si napacno stevilo verjetnosti", JOptionPane.ERROR_MESSAGE);
-			ok = false;
-		}
-
+		
+		verjetnosti = new float[spremenljivke.length];
+		zac_vr = new int[spremenljivke.length];
+		
+		for(int i = 0; i < spremenljivke.length; i++){
 			
-
-		String[] vr = jTextField4.getText().split(" ");
-		if( vr.length != spremenljivke.length){
-			JOptionPane.showMessageDialog(this, "Vnesti moras :"+spremenljivke.length+" zacetnih vrednosti", "Vnesel si napacno stevilo zacetnih vrednosti", JOptionPane.ERROR_MESSAGE);
-			ok = false;
-		}
-		
-		
+			try {
+				verjetnosti[i] = (float)Double.parseDouble(textFieldVer[i].getText());
+			}catch (Exception e){
+		//		e.printStackTrace();
+				JOptionPane.showMessageDialog(this, "Napacen vnos verjetnosti spremenljivke "+spremenljivke[i]+"!", "Napacen vnos", JOptionPane.ERROR_MESSAGE);
+				ok = false;
+				break;
+			}
+	
+			try {
+				zac_vr[i] = Integer.parseInt(textFieldVr[i].getText());
+				if(zac_vr[i] < 0 || zac_vr[i] > 1){
+					JOptionPane.showMessageDialog(this, "Napacen vnos zacetne vrednosti spremenljivke"+spremenljivke[i]+"!\n Zacetna vrednost je lahko le 0 ali 1.", "Napacen vnos", JOptionPane.ERROR_MESSAGE);
+					ok = false;
+					break;
+				}
+			}catch (Exception e){
+		//		e.printStackTrace();
+				JOptionPane.showMessageDialog(this, "Napacen vnos zacetne vrednosti spremenljivke "+spremenljivke[i]+"!", "Napacen vnos", JOptionPane.ERROR_MESSAGE);
+				ok = false;
+				break;
+			}
+			
+		}	
 
 		if(ok){
-			verjetnosti = new float[ver.length];
-			for(int i = 0; i < ver.length; i++){
-				verjetnosti[i] = (float)Double.parseDouble(ver[i]);
-			}
-			
-			zac_vr = new int[vr.length];
-			for(int i = 0; i < vr.length; i++){
-				zac_vr[i] = Integer.parseInt(vr[i]);
-			}
-			
 			Izracun izracun = new Izracun(spremenljivke, verjetnosti, zac_vr, exp);
 			Izpis izpis = new Izpis(izracun);
 			izpis.izpisi(filename);
 			getJDialog1().dispose();
-			jTextField2.setText("");
-			jTextField3.setText("");
-			jTextField4.setText("");
 		}
-		else{
-			jTextField2.setText("");
-			jTextField3.setText("");
-			jTextField4.setText("");
-		}
+
 
 	}
 
@@ -321,6 +327,15 @@ public class Okno extends javax.swing.JFrame {
 
 	private void izhodMouseClicked(MouseEvent evt){
 		this.dispose();
+	}
+
+	private JLabel getJLabel5() {
+		if(jLabel5 == null) {
+			jLabel5 = new JLabel();
+			jLabel5.setText("Spremenljivke:");
+			jLabel5.setBounds(0, 48, 70, 14);
+		}
+		return jLabel5;
 	}
 
 }
