@@ -27,8 +27,8 @@ public class Parse {
       }
       absyn=parser.parseResult;
       spremenljivke = yylex.spremenljivke;
-//      Absyn.Print printer = new Absyn.Print(System.out);
-//      printer.prExp(absyn,0);
-//      System.out.println("\n");
+      Absyn.Print printer = new Absyn.Print(System.out);
+      printer.prExp(absyn,0);
+      System.out.println("\n");
 } }   }
 

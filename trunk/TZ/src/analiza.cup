@@ -36,6 +36,9 @@ program ::= exp:e
 				{: RESULT = new Absyn.OpExp(eleft, new Absyn.IntExp(0,0), Absyn.OpExp.NOT, new Absyn.SeqExp(eleft,e)); :} 
 				%prec UMINUS
 				
+				| NOT LPAREN exp:r RPAREN
+				{: RESULT = new Absyn.OpExp(rleft, new Absyn.IntExp(0,0), Absyn.OpExp.NOT, r); :}
+				
 				| LPAREN:lp exps:el RPAREN
 				{: RESULT = new Absyn.SeqExp(lpleft, el); :}
 				
