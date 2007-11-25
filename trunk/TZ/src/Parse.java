@@ -4,14 +4,13 @@ public class Parse {
   public ErrorMsg.ErrorMsg errorMsg;
   public Absyn.Exp absyn;
 
-  public Parse(String filename) {
-      errorMsg = new ErrorMsg.ErrorMsg(filename);
-      {java.io.InputStream inp;
-       try {inp=new java.io.FileInputStream(filename);
-       } catch (java.io.FileNotFoundException e) {
-	 throw new Error("File not found: " + filename);
+  public Parse(String izraz) {
+      {java.io.Reader inp;
+       try {inp=new java.io.StringReader(izraz);
+       } catch (Exception e) {
+	 throw new Error("Ni izraza/napaka v izrazu: " + izraz);
        }
-       Grm parser = new Grm(new Yylex(inp,errorMsg), errorMsg);
+       Grm parser = new Grm(new Yylex(inp));
       /* open input files, etc. here */
 
       try {

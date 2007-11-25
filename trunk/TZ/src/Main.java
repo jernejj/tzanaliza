@@ -5,8 +5,10 @@ import java.util.Vector;
 public class Main {
 
 	public static void main(String argv[])  {
-		String filename = argv[0];
-		Parse parse = new Parse(filename);
+
+		String izraz = "x1 or x2 or x3";
+		Parse parse = new Parse(izraz);
+		
 		Absyn.OpExp op = null;
 		
 		String[] spremenljivke = { "x1", "x2", "x3" };
