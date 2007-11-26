@@ -5,15 +5,16 @@ import java.util.Vector;
 
 public class Izracun {
 	
-	private static Hashtable<String, Variable> variable = new Hashtable<String, Variable>();
-	private static String[] sprem;
-	private static float[] ver_sprem ; //verjetnost da je Xi=1
-	private static int[] zac_vre ;
-	private static float apr_ver;
-	private static Absyn.OpExp opExp;
-	private static Vector<Delta> delte = new Vector<Delta>();
-	private static Vector<Interakcija> interakcije = new Vector<Interakcija>();
-	private static Vector<Prispevek> prispevki = new Vector<Prispevek>();
+	private  Hashtable<String, Variable> variable;
+	private  String[] sprem;
+	private  float[] ver_sprem ; //verjetnost da je Xi=1
+	private  int[] zac_vre ;
+	private  float apr_ver;
+	private  Absyn.OpExp opExp;
+	private  Vector<Delta> delte;
+	private  Vector<Interakcija> interakcije;
+	private  Vector<Prispevek> prispevki;
+	private  Tree drevo;
 	
 	/**
 	 * Konstruktor Izracun, izracuna delte, interakcije, ter prispevke spremenljivk. Kot argumente sprejme:
@@ -28,12 +29,18 @@ public class Izracun {
 		this.ver_sprem = verSprem;
 		this.zac_vre = zac_vrednosti;
 		this.sprem = sprem;
+		
+		variable = new Hashtable<String, Variable>();
+		delte = new Vector<Delta>();
+		interakcije = new Vector<Interakcija>();
+		prispevki = new Vector<Prispevek>();
+		
 		if (exp instanceof Absyn.OpExp)
 			opExp = (Absyn.OpExp)exp;
 		if(exp instanceof Absyn.SeqExp)
 			opExp = (Absyn.OpExp)((Absyn.SeqExp)exp).list.head;
 		
-		Tree drevo = new Tree((NodeOp)pretvori(opExp));
+	    drevo = new Tree((NodeOp)pretvori(opExp));
 		
 		apr_ver = aprverjetnost(drevo.root);
 		izracunajDelte(drevo.root);
@@ -67,7 +74,7 @@ public class Izracun {
 		return this.prispevki;
 	}
 	
-	private static Node pretvori(Absyn.OpExp exp){
+	private  Node pretvori(Absyn.OpExp exp){
 
 		NodeOp nop = new NodeOp();
 
@@ -199,7 +206,7 @@ public class Izracun {
 	}
 	
 	
-	private static int izracunaj(NodeOp nod){
+	private  int izracunaj(NodeOp nod){
 		int v=0;
 		NodeOp node = nod;
 
@@ -260,7 +267,7 @@ public class Izracun {
 	 * @return rezultat tipa float, ki predstavlja apriorno verjetnost
 	 */
 	
-	private static float aprverjetnost(NodeOp nod){
+	private  float aprverjetnost(NodeOp nod){
 		NodeOp node = nod;
 		int st_spremenljivk = variable.size();
 		float rezultat = 0;
@@ -297,7 +304,7 @@ public class Izracun {
 	 *
 	 */
 	
-	private static void izracunajDelte(NodeOp node){
+	private  void izracunajDelte(NodeOp node){
 		int st_dlt = 0;
 		for(int i = 1; i <= sprem.length; i++){
 			st_dlt += binom(sprem.length, i);
@@ -334,7 +341,7 @@ public class Izracun {
 	 * @return rezultat delta'
 	 */
 	
-	private static float izr_ver(Vector<String> stat, NodeOp node){
+	private  float izr_ver(Vector<String> stat, NodeOp node){
 		int st_spremenljivk = variable.size()-stat.size();
 		float rezultat = 0;
 		
@@ -403,7 +410,7 @@ public class Izracun {
 	 * @return tabela tipa short[][]
 	 */
 	
-	private static short[][] generate(int number) {
+	private  short[][] generate(int number) {
 		int n = number;
 		short[][] tabela = new short[n][(int)Math.pow((float)2,(float)n)];
 		String bin="";
@@ -420,7 +427,7 @@ public class Izracun {
 	
 	}
 	
-	private static void izr_Interakcije(){
+	private  void izr_Interakcije(){
 		
 		for(int i = 0; i < sprem.length; i++ ){
 			interakcije.add( new Interakcija(sprem[i],getDelta(sprem[i]).getVr(),1) );
@@ -463,7 +470,7 @@ public class Izracun {
 	}
 	
 	
-	private static void izr_Prispevke(){
+	private  void izr_Prispevke(){
 		
 		for(int i = 0; i < sprem.length; i++){
 			String ime = sprem[i];
@@ -489,7 +496,7 @@ public class Izracun {
 		
 	}
 	
-	private static Vector<Interakcija> getInterContainIme(String ime){
+	private  Vector<Interakcija> getInterContainIme(String ime){
 		
 		Vector<Interakcija> inter = new Vector<Interakcija>();
 		
@@ -509,7 +516,7 @@ public class Izracun {
 	 * @return delta tipa Delta
 	 */
 	
-	private static Delta getDelta(String ime ){
+	private  Delta getDelta(String ime ){
 		for(Delta deltaTmp : delte) {
 			if(deltaTmp.getIme().equals(ime))
 				return deltaTmp;
@@ -524,7 +531,7 @@ public class Izracun {
 	 * @return interTmp iz vektorja interakcije, ki ima ime <B>ime</B>;
 	 */
 	
-	private static Interakcija getInter(String ime){
+	private  Interakcija getInter(String ime){
 		for(Interakcija interTmp : interakcije)
 			if(interTmp.getIme().equals(ime))
 				return interTmp;
@@ -533,7 +540,7 @@ public class Izracun {
 		
 	}
 	
-	private static void print(short[][] t) {
+	private  void print(short[][] t) {
 		for(int i = 0; i < t.length; i++) {
 			for(int j = 0; j < t[0].length; j++ ) {
 				System.out.print(t[i][j]+ " ");
@@ -542,7 +549,7 @@ public class Izracun {
 		}
 	}
 	
-	private static int binom(int n, int r){
+	private  int binom(int n, int r){
 		int[] b = new int[n+1];
 		b[0] = 1;
 		for(int i = 1; i <= n; i++){
@@ -553,4 +560,17 @@ public class Izracun {
 		}
 		return b[r];
 	}
+	
+	
+	public int izracunajVrednost(){
+		
+		for(int i = 0; i < zac_vre.length; i++){
+			variable.get(sprem[i]).setValue(zac_vre[i]);
+		}
+		
+		return izracunaj(drevo.root);
+		
+	}
+	
+	
 }

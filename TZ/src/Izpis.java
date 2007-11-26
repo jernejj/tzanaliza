@@ -28,6 +28,10 @@ public class Izpis {
 			FileWriter wfile = new FileWriter(filename);
 			BufferedWriter out = new BufferedWriter(wfile);
 			
+			out.write("Vrednost izraza je: "+izracun.izracunajVrednost());
+			out.newLine();
+			
+			out.newLine();
 			for(Delta dltTmp : izracun.getDelte()){
 				out.write("dlt("+dltTmp.getIme()+") = "+dltTmp.getVr());
 				out.newLine();
