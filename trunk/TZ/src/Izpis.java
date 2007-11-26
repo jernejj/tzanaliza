@@ -28,6 +28,10 @@ public class Izpis {
 			FileWriter wfile = new FileWriter(filename);
 			BufferedWriter out = new BufferedWriter(wfile);
 			
+			out.write("Izracuni za izraz "+Okno.izraz);
+			out.newLine();
+			out.newLine();
+			
 			out.write("Vrednost izraza je: "+izracun.izracunajVrednost());
 			out.newLine();
 			
