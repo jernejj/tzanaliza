@@ -1,12 +1,14 @@
+import com.cloudgarden.layout.AnchorConstraint;
+import com.cloudgarden.layout.AnchorLayout;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JTextField;
-
 
 import javax.swing.WindowConstants;
 import javax.swing.SwingUtilities;
@@ -42,12 +44,12 @@ public class Okno extends javax.swing.JFrame {
 		}
 	}
 
-	private JDialog jDialog1;
 	private JButton jButton2;
 	private JLabel jLabel2;
-	private JButton jButton1;
 	private JLabel jLabel4;
 	private JLabel jLabel5;
+	private JPanel jPanel2;
+	private JPanel jPanel1;
 	private JLabel[] labelaSprem;
 	private JTextField[] textFieldVer;
 	private JTextField[] textFieldVr;
@@ -60,8 +62,12 @@ public class Okno extends javax.swing.JFrame {
 
 	private Absyn.Exp exp;
 	private String[] spremenljivke;
-	private String izraz;
+	public	static String izraz;
 	private float[] verjetnosti=null;
+	private JSeparator jSeparator2;
+	private JSeparator jSeparator1;
+	private JLabel statusBar;
+	private JButton izracun;
 	private int[]	zac_vr=null;
 	private String filename=null;
 
@@ -85,65 +91,26 @@ public class Okno extends javax.swing.JFrame {
 
 	private void initGUI() {
 		try {
-			getContentPane().setLayout(null);
+			AnchorLayout thisLayout = new AnchorLayout();
+			getContentPane().setLayout(thisLayout);
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-			getContentPane().add(getJButton2());
-			getContentPane().add(getJLabel2());
-			getContentPane().add(getJTextField1());
-			getContentPane().add(getZbrisi());
-			getContentPane().add(getIzhod());
+			getContentPane().add(getJSeparator1(), new AnchorConstraint(952, 1000, 979, 0, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
+			getContentPane().add(getStatusBar(), new AnchorConstraint(952, 1000, 1006, 0, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
+			getContentPane().add(getJPanel2(), new AnchorConstraint(378, 1000, 952, 0, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
+			getContentPane().add(getJPanel1(), new AnchorConstraint(1, 1000, 355, 0, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
 			pack();
-			this.setSize(376, 225);
+			this.setSize(624, 401);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	private JDialog getJDialog1() {
-		if(jDialog1 == null) {
-			jDialog1 = new JDialog(this);
-
-			jDialog1.getContentPane().setLayout(null);
-			jDialog1.setPreferredSize(new java.awt.Dimension(327, 190));
-			jDialog1.getContentPane().add(getJButton1());
-			jDialog1.getContentPane().add(getJLabel1());
-			jDialog1.getContentPane().add(getJTextField2());
-			jDialog1.getContentPane().add(getJLabel3());
-			jDialog1.getContentPane().add(getJLabel4());
-			jDialog1.getContentPane().add(getJLabel5());
-
-			int stSprem = spremenljivke.length;
-			labelaSprem = new JLabel[stSprem];
-			textFieldVer = new JTextField[stSprem];
-			textFieldVr = new JTextField[stSprem];
-			for(int i = 0; i < stSprem; i++){
-				labelaSprem[i] = new JLabel();
-				labelaSprem[i].setText(spremenljivke[i]);
-				labelaSprem[i].setBounds(83+i*32, 48, 26, 20);
-
-				textFieldVer[i] = new JTextField();
-				textFieldVer[i].setText("0.5");
-				textFieldVer[i].setBounds(83+i*32, 65, 26, 20);
-
-				textFieldVr[i] = new JTextField();
-				textFieldVr[i].setBounds(83+i*32, 91, 26, 20);
-
-				jDialog1.getContentPane().add(labelaSprem[i]);
-				jDialog1.getContentPane().add(textFieldVer[i]);
-				jDialog1.getContentPane().add(textFieldVr[i]);
-
-			}
-
-			jDialog1.setSize(327, 190);
-		}
-		return jDialog1;
-	}
 
 	private JButton getJButton2() {
 		if(jButton2 == null) {
 			jButton2 = new JButton();
-			jButton2.setText("Izracunaj");
-			jButton2.setBounds(87, 100, 86, 34);
+			jButton2.setText("Preberi izraz");
+			jButton2.setPreferredSize(new java.awt.Dimension(129, 42));
 			jButton2.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent evt) {
 					jButton2MouseClicked(evt);
@@ -156,6 +123,9 @@ public class Okno extends javax.swing.JFrame {
 
 	private void jButton2MouseClicked(MouseEvent evt) { //button v glavnem oknu
 		boolean ok = true;
+		
+		statusBar.setText("");
+		
 		izraz = jTextField1.getText();
 		if(izraz.isEmpty()){
 			JOptionPane.showMessageDialog(this, "Vnesti moras izraz", "Notification", JOptionPane.INFORMATION_MESSAGE);
@@ -164,6 +134,12 @@ public class Okno extends javax.swing.JFrame {
 		if(ok){
 			Parse parse = new Parse(izraz);
 			if(parse.izrazJeOk){
+				jPanel2.removeAll();
+				jPanel2.add(getJSeparator2(), new AnchorConstraint(2, 1000, 50, 0, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
+				jPanel2.add(getIzracun(), new AnchorConstraint(804, 984, 953, 775, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
+				jPanel2.add(getJLabel4(), new AnchorConstraint(462, 153, 611, 17, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
+				jPanel2.add(getJLabel5(), new AnchorConstraint(111, 153, 260, 17, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
+				jPanel2.add(getJLabel3(), new AnchorConstraint(287, 153, 436, 17, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
 				exp = parse.absyn;
 				spremenljivke = new String[parse.spremenljivke.size()];
 				int i = 0;
@@ -171,12 +147,30 @@ public class Okno extends javax.swing.JFrame {
 					spremenljivke[i] = sprTmp;
 					i++;
 				}
-				//	System.out.println("Izraz je: "+izraz);
-				//dialog za vnos ime datoteke, verjetnosti in zacetnih vrednosti
-				jDialog1 = null;
-				getJDialog1().pack();
-				getJDialog1().setLocationRelativeTo(null);
-				getJDialog1().setVisible(true);
+				
+				int stSprem = spremenljivke.length;
+				labelaSprem = new JLabel[stSprem];
+				textFieldVer = new JTextField[stSprem];
+				textFieldVr = new JTextField[stSprem];
+				for(i = 0; i < stSprem; i++){
+					labelaSprem[i] = new JLabel();
+					labelaSprem[i].setText(spremenljivke[i]);
+					labelaSprem[i].setPreferredSize(new java.awt.Dimension(38, 34));
+					jPanel2.add(labelaSprem[i], new AnchorConstraint(111, 214+i*77, 260, 153+i*78, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
+					
+					textFieldVer[i] = new JTextField();
+					textFieldVer[i].setText("0.5");
+					textFieldVer[i].setPreferredSize(new java.awt.Dimension(37, 34));
+					jPanel2.add(textFieldVer[i], new AnchorConstraint(287, 214+i*77, 436, 153+i*78, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
+					
+					textFieldVr[i] = new JTextField();
+					textFieldVr[i].setPreferredSize(new java.awt.Dimension(37, 34));
+					jPanel2.add(textFieldVr[i], new AnchorConstraint(462, 214+i*77, 611, 153+i*78, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
+					
+				}
+				
+				jPanel2.updateUI();			
+				
 			}
 		}
 
@@ -187,10 +181,10 @@ public class Okno extends javax.swing.JFrame {
 		if(jLabel2 == null) {
 			jLabel2 = new JLabel();
 			jLabel2.setText("Vnesi izraz:");
-			jLabel2.setSize(80, 20);
 			jLabel2.setLocation(new java.awt.Point(1, 29));
 			jLabel2.setMaximumSize(new java.awt.Dimension(80, 40));
 			jLabel2.setMinimumSize(new java.awt.Dimension(40, 20));
+			jLabel2.setPreferredSize(new java.awt.Dimension(87, 43));
 		}
 		return jLabel2;
 	}
@@ -198,31 +192,18 @@ public class Okno extends javax.swing.JFrame {
 	private JTextField getJTextField1() {
 		if(jTextField1 == null) {
 			jTextField1 = new JTextField();
-			jTextField1.setBounds(77, 29, 186, 22);
 			jTextField1.setToolTipText("Operatori so: or and not()");
+			jTextField1.setPreferredSize(new java.awt.Dimension(180, 46));
+			jTextField1.setFont(new java.awt.Font("Tahoma",0,12));
 		}
 		return jTextField1;
-	}
-
-	private JButton getJButton1() {
-		if(jButton1 == null) {
-			jButton1 = new JButton();
-			jButton1.setText("OK");
-			jButton1.setBounds(248, 116, 53, 23);
-			jButton1.addMouseListener(new MouseAdapter() {
-				public void mouseClicked(MouseEvent evt) {
-					jButton1MouseClicked(evt);
-				}
-			});
-		}
-		return jButton1;
 	}
 
 	private JLabel getJLabel1() {
 		if(jLabel1 == null) {
 			jLabel1 = new JLabel();
 			jLabel1.setText("Ime datoteke:");
-			jLabel1.setBounds(0, 9, 83, 20);
+			jLabel1.setPreferredSize(new java.awt.Dimension(83, 42));
 		}
 		return jLabel1;
 	}
@@ -230,9 +211,9 @@ public class Okno extends javax.swing.JFrame {
 	private JTextField getJTextField2() {
 		if(jTextField2 == null) {
 			jTextField2 = new JTextField();
-			jTextField2.setBounds(83, 9, 53, 20);
 			jTextField2.setToolTipText("Vnesi ime datoteke, privzeto ime je izpis.txt");
 			jTextField2.setText("izpis.txt");
+			jTextField2.setPreferredSize(new java.awt.Dimension(110, 42));
 		}
 		return jTextField2;
 	}
@@ -241,7 +222,7 @@ public class Okno extends javax.swing.JFrame {
 		if(jLabel3 == null) {
 			jLabel3 = new JLabel();
 			jLabel3.setText("Verjetnosti:");
-			jLabel3.setBounds(0, 68, 83, 20);
+			jLabel3.setPreferredSize(new java.awt.Dimension(83, 34));
 		}
 		return jLabel3;
 	}
@@ -250,7 +231,7 @@ public class Okno extends javax.swing.JFrame {
 		if(jLabel4 == null) {
 			jLabel4 = new JLabel();
 			jLabel4.setText("Zac. vred.:");
-			jLabel4.setBounds(0, 93, 83, 20);
+			jLabel4.setPreferredSize(new java.awt.Dimension(83, 34));
 		}
 		return jLabel4;
 	}
@@ -296,7 +277,7 @@ public class Okno extends javax.swing.JFrame {
 			Izracun izracun = new Izracun(spremenljivke, verjetnosti, zac_vr, exp);
 			Izpis izpis = new Izpis(izracun);
 			izpis.izpisi(filename);
-			getJDialog1().dispose();
+			statusBar.setText("Izracun je koncan, rezultati so zapisani v datoteki "+filename);
 		}
 
 
@@ -306,7 +287,7 @@ public class Okno extends javax.swing.JFrame {
 		if(Zbrisi == null) {
 			Zbrisi = new JButton();
 			Zbrisi.setText("Zbrisi");
-			Zbrisi.setBounds(273, 29, 57, 23);
+			Zbrisi.setPreferredSize(new java.awt.Dimension(125, 46));
 			Zbrisi.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent evt) {
 					zbrisiMouseClicked(evt);
@@ -324,7 +305,7 @@ public class Okno extends javax.swing.JFrame {
 		if(Izhod == null) {
 			Izhod = new JButton();
 			Izhod.setText("Izhod");
-			Izhod.setBounds(192, 101, 86, 34);
+			Izhod.setPreferredSize(new java.awt.Dimension(127, 46));
 			Izhod.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent evt) {
 					izhodMouseClicked(evt);
@@ -342,11 +323,78 @@ public class Okno extends javax.swing.JFrame {
 		if(jLabel5 == null) {
 			jLabel5 = new JLabel();
 			jLabel5.setText("Spremenljivke:");
-			jLabel5.setBounds(0, 48, 83, 20);
 			jLabel5.setAutoscrolls(true);
+			jLabel5.setPreferredSize(new java.awt.Dimension(83, 34));
 		}
 		return jLabel5;
 	}
-
+	
+	private JPanel getJPanel1() {
+		if(jPanel1 == null) {
+			jPanel1 = new JPanel();
+			AnchorLayout jPanel1Layout = new AnchorLayout();
+			jPanel1.setLayout(jPanel1Layout);
+			jPanel1.setPreferredSize(new java.awt.Dimension(608, 160));
+			jPanel1.add(getJTextField2(), new AnchorConstraint(678, 328, 940, 147, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
+			jPanel1.add(getJLabel1(), new AnchorConstraint(678, 140, 940, 4, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
+			jPanel1.add(getJLabel2(), new AnchorConstraint(66, 160, 313, 17, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
+			jPanel1.add(getJTextField1(), new AnchorConstraint(54, 462, 318, 166, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
+			jPanel1.add(getZbrisi(), new AnchorConstraint(54, 810, 318, 604, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
+			jPanel1.add(getJButton2(), new AnchorConstraint(678, 765, 940, 553, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
+			jPanel1.add(getIzhod(), new AnchorConstraint(675, 984, 939, 775, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
+			
+		}
+		return jPanel1;
+	}
+	
+	private JPanel getJPanel2() {
+		if(jPanel2 == null) {
+			jPanel2 = new JPanel();
+			AnchorLayout jPanel2Layout = new AnchorLayout();
+			jPanel2.setLayout(jPanel2Layout);
+			jPanel2.setPreferredSize(new java.awt.Dimension(608, 210));
+			
+		}
+		return jPanel2;
+	}
+	
+	
+	private JButton getIzracun() {
+		if(izracun == null) {
+			izracun = new JButton();
+			izracun.setText("Izracunaj");
+			izracun.setPreferredSize(new java.awt.Dimension(127, 34));
+			izracun.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent evt) {
+					jButton1MouseClicked(evt);
+				}
+			});
+		}
+		return izracun;
+	}
+	
+	private JLabel getStatusBar() {
+		if(statusBar == null) {
+			statusBar = new JLabel();
+			statusBar.setPreferredSize(new java.awt.Dimension(608, 20));
+		}
+		return statusBar;
+	}
+	
+	private JSeparator getJSeparator1() {
+		if(jSeparator1 == null) {
+			jSeparator1 = new JSeparator();
+			jSeparator1.setPreferredSize(new java.awt.Dimension(608, 10));
+		}
+		return jSeparator1;
+	}
+	
+	private JSeparator getJSeparator2() {
+		if(jSeparator2 == null) {
+			jSeparator2 = new JSeparator();
+			jSeparator2.setPreferredSize(new java.awt.Dimension(608, 10));
+		}
+		return jSeparator2;
+	}
 
 }
