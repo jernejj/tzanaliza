@@ -102,6 +102,7 @@ public class Okno extends javax.swing.JFrame {
 	private JDialog getJDialog1() {
 		if(jDialog1 == null) {
 			jDialog1 = new JDialog(this);
+		
 			jDialog1.getContentPane().setLayout(null);
 			jDialog1.setPreferredSize(new java.awt.Dimension(327, 190));
 			jDialog1.getContentPane().add(getJButton1());
@@ -163,7 +164,6 @@ public class Okno extends javax.swing.JFrame {
 		if(ok){
 			Parse parse = new Parse(izraz);
 			exp = parse.absyn;
-
 			spremenljivke = new String[parse.spremenljivke.size()];
 			int i = 0;
 			for(String sprTmp : parse.spremenljivke){
@@ -172,6 +172,7 @@ public class Okno extends javax.swing.JFrame {
 			}
 			//	System.out.println("Izraz je: "+izraz);
 			//dialog za vnos ime datoteke, verjetnosti in zacetnih vrednosti
+			jDialog1 = null;
 			getJDialog1().pack();
 			getJDialog1().setLocationRelativeTo(null);
 			getJDialog1().setVisible(true);
