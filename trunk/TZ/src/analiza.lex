@@ -44,7 +44,7 @@ Identifier = [a-zA-Z][a-zA-Z0-9_]*
 	")"		{return tok(sym.RPAREN,null); }
 	"and"		{return tok(sym.AND,null); }
 	"or"		{return tok(sym.OR,null); }
-	"neg"		{return tok(sym.NOT,null); }
+	"neg"		{return tok(sym.NEG,null); }
 }	
 
 	

@@ -12,7 +12,7 @@ parser code  {:
 :};
 
 terminal String ID ;
-terminal LPAREN, RPAREN, AND, OR, NOT, UMINUS;
+terminal LPAREN, RPAREN, AND, OR, NEG, UMINUS;
 
 non terminal program;
 non terminal Absyn.Exp exp;
@@ -22,7 +22,7 @@ non terminal Absyn.ExpList exps;
 
 precedence left OR;
 precedence left AND;
-precedence left NOT;
+precedence left NEG;
 
 start with program;
 
@@ -32,12 +32,13 @@ program ::= exp:e
 				{: RESULT = new Absyn.VarExp(lv.pos, lv); :}
 				/* operators */ 
 				
-				| NOT LPAREN exps:e RPAREN
-				{: RESULT = new Absyn.OpExp(eleft, new Absyn.IntExp(0,0), Absyn.OpExp.NOT, new Absyn.SeqExp(eleft,e)); :} 
+				| NEG LPAREN exps:e RPAREN
+				{: RESULT = new Absyn.OpExp(eleft, new Absyn.IntExp(0,0), Absyn.OpExp.NEG, new Absyn.SeqExp(eleft,e)); :} 
 				%prec UMINUS
 				
-				| NOT LPAREN exp:r RPAREN
-				{: RESULT = new Absyn.OpExp(rleft, new Absyn.IntExp(0,0), Absyn.OpExp.NOT, r); :}
+								
+				| NEG LPAREN exp:r RPAREN
+				{: RESULT = new Absyn.OpExp(rleft, new Absyn.IntExp(0,0), Absyn.OpExp.NEG, r); :}
 				
 				| LPAREN:lp exps:el RPAREN
 				{: RESULT = new Absyn.SeqExp(lpleft, el); :}
