@@ -94,6 +94,7 @@ public class Okno extends javax.swing.JFrame {
 			AnchorLayout thisLayout = new AnchorLayout();
 			getContentPane().setLayout(thisLayout);
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+			getContentPane().add(getJSeparator2(), new AnchorConstraint(353, 1000, 381, 0, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
 			getContentPane().add(getJSeparator1(), new AnchorConstraint(952, 1000, 979, 0, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
 			getContentPane().add(getStatusBar(), new AnchorConstraint(952, 1000, 1006, 0, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
 			getContentPane().add(getJPanel2(), new AnchorConstraint(378, 1000, 952, 0, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
@@ -135,7 +136,6 @@ public class Okno extends javax.swing.JFrame {
 			Parse parse = new Parse(izraz);
 			if(parse.izrazJeOk){
 				jPanel2.removeAll();
-				jPanel2.add(getJSeparator2(), new AnchorConstraint(2, 1000, 50, 0, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
 				jPanel2.add(getIzracun(), new AnchorConstraint(804, 984, 953, 775, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
 				jPanel2.add(getJLabel4(), new AnchorConstraint(462, 153, 611, 17, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
 				jPanel2.add(getJLabel5(), new AnchorConstraint(111, 153, 260, 17, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
