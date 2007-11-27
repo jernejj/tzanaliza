@@ -45,7 +45,7 @@ public class Print {
     switch(e.oper) {
     case OpExp.AND: say("AND"); break;
     case OpExp.OR: say("OR"); break;
-    case OpExp.NOT: say("NOT"); break;
+    case OpExp.NEG: say("NEG"); break;
     default:
       throw new Error("Print.prExp.OpExp");
     }

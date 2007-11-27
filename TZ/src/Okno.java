@@ -192,7 +192,7 @@ public class Okno extends javax.swing.JFrame {
 	private JTextField getJTextField1() {
 		if(jTextField1 == null) {
 			jTextField1 = new JTextField();
-			jTextField1.setToolTipText("Operatori so: or and not()");
+			jTextField1.setToolTipText("Operatorji so: or and neg()");
 			jTextField1.setPreferredSize(new java.awt.Dimension(180, 46));
 			jTextField1.setFont(new java.awt.Font("Tahoma",0,12));
 		}
@@ -250,6 +250,12 @@ public class Okno extends javax.swing.JFrame {
 
 			try {
 				verjetnosti[i] = (float)Double.parseDouble(textFieldVer[i].getText());
+				if(verjetnosti[i] < 0 || verjetnosti[i] > 1 ){
+					JOptionPane.showMessageDialog(this, "Napacen vnos verjetnosti spremenljivke "+spremenljivke[i]+"!\n Verjetnost spremenljivke nesme biti vecja od 1 ali pa negativna", "Napacen vnos", JOptionPane.ERROR_MESSAGE);
+					ok = false;
+					break;
+				}
+					
 			}catch (Exception e){
 				//		e.printStackTrace();
 				JOptionPane.showMessageDialog(this, "Napacen vnos verjetnosti spremenljivke "+spremenljivke[i]+"!", "Napacen vnos", JOptionPane.ERROR_MESSAGE);

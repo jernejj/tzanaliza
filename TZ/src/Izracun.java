@@ -126,7 +126,7 @@ public class Izracun {
 		}
 
 
-		if(exp.oper == Absyn.OpExp.NOT){
+		if(exp.oper == Absyn.OpExp.NEG){
 			nop.setOp('!');
 
 			if(exp.right instanceof Absyn.VarExp ){
