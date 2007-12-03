@@ -138,7 +138,7 @@ public class Okno extends javax.swing.JFrame {
 				jPanel2.removeAll();
 				jPanel2.add(getIzracun(), new AnchorConstraint(804, 984, 953, 775, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
 				jPanel2.add(getJLabel4(), new AnchorConstraint(462, 153, 611, 17, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
-				jPanel2.add(getJLabel5(), new AnchorConstraint(111, 153, 260, 17, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
+				jPanel2.add(getJLabel5(), new AnchorConstraint(110, 184, 260, 17, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
 				jPanel2.add(getJLabel3(), new AnchorConstraint(287, 153, 436, 17, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
 				exp = parse.absyn;
 				spremenljivke = new String[parse.spremenljivke.size()];
@@ -156,16 +156,16 @@ public class Okno extends javax.swing.JFrame {
 					labelaSprem[i] = new JLabel();
 					labelaSprem[i].setText(spremenljivke[i]);
 					labelaSprem[i].setPreferredSize(new java.awt.Dimension(38, 34));
-					jPanel2.add(labelaSprem[i], new AnchorConstraint(111, 214+i*77, 260, 153+i*78, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
+					jPanel2.add(labelaSprem[i], new AnchorConstraint(111, 256+i*77, 260, 183+i*78, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
 					
 					textFieldVer[i] = new JTextField();
 					textFieldVer[i].setText("0.5");
 					textFieldVer[i].setPreferredSize(new java.awt.Dimension(37, 34));
-					jPanel2.add(textFieldVer[i], new AnchorConstraint(287, 214+i*77, 436, 153+i*78, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
+					jPanel2.add(textFieldVer[i], new AnchorConstraint(287, 256+i*77, 436, 183+i*78, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
 					
 					textFieldVr[i] = new JTextField();
 					textFieldVr[i].setPreferredSize(new java.awt.Dimension(37, 34));
-					jPanel2.add(textFieldVr[i], new AnchorConstraint(462, 214+i*77, 611, 153+i*78, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
+					jPanel2.add(textFieldVr[i], new AnchorConstraint(462, 256+i*77, 611, 183+i*78, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
 					
 				}
 				
@@ -203,7 +203,7 @@ public class Okno extends javax.swing.JFrame {
 		if(jLabel1 == null) {
 			jLabel1 = new JLabel();
 			jLabel1.setText("Ime datoteke:");
-			jLabel1.setPreferredSize(new java.awt.Dimension(83, 42));
+			jLabel1.setPreferredSize(new java.awt.Dimension(103, 35));
 		}
 		return jLabel1;
 	}
@@ -213,7 +213,7 @@ public class Okno extends javax.swing.JFrame {
 			jTextField2 = new JTextField();
 			jTextField2.setToolTipText("Vnesi ime datoteke, privzeto ime je izpis.txt");
 			jTextField2.setText("izpis.txt");
-			jTextField2.setPreferredSize(new java.awt.Dimension(110, 42));
+			jTextField2.setPreferredSize(new java.awt.Dimension(115, 35));
 		}
 		return jTextField2;
 	}
@@ -330,7 +330,7 @@ public class Okno extends javax.swing.JFrame {
 			jLabel5 = new JLabel();
 			jLabel5.setText("Spremenljivke:");
 			jLabel5.setAutoscrolls(true);
-			jLabel5.setPreferredSize(new java.awt.Dimension(83, 34));
+			jLabel5.setPreferredSize(new java.awt.Dimension(103, 32));
 		}
 		return jLabel5;
 	}
@@ -341,8 +341,8 @@ public class Okno extends javax.swing.JFrame {
 			AnchorLayout jPanel1Layout = new AnchorLayout();
 			jPanel1.setLayout(jPanel1Layout);
 			jPanel1.setPreferredSize(new java.awt.Dimension(608, 160));
-			jPanel1.add(getJTextField2(), new AnchorConstraint(678, 328, 940, 147, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
-			jPanel1.add(getJLabel1(), new AnchorConstraint(678, 140, 940, 4, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
+			jPanel1.add(getJTextField2(), new AnchorConstraint(675, 357, 942, 170, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
+			jPanel1.add(getJLabel1(), new AnchorConstraint(675, 171, 942, 4, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
 			jPanel1.add(getJLabel2(), new AnchorConstraint(66, 160, 313, 17, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
 			jPanel1.add(getJTextField1(), new AnchorConstraint(54, 462, 318, 166, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
 			jPanel1.add(getZbrisi(), new AnchorConstraint(54, 810, 318, 604, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));

@@ -20,7 +20,7 @@ non terminal Absyn.Var lvalue;
 non terminal Absyn.ExpList exps;
 
 
-precedence left OR;
+spaprecedence left OR;
 precedence left AND;
 precedence left NEG;
 
@@ -32,16 +32,19 @@ program ::= exp:e
 				{: RESULT = new Absyn.VarExp(lv.pos, lv); :}
 				/* operators */ 
 				
-				| NEG LPAREN exps:e RPAREN
+		/*		| NEG LPAREN exps:e RPAREN
 				{: RESULT = new Absyn.OpExp(eleft, new Absyn.IntExp(0,0), Absyn.OpExp.NEG, new Absyn.SeqExp(eleft,e)); :} 
-				%prec UMINUS
-				
+				%prec UMINUS  */
+				 
 								
 				| NEG LPAREN exp:r RPAREN
 				{: RESULT = new Absyn.OpExp(rleft, new Absyn.IntExp(0,0), Absyn.OpExp.NEG, r); :}
 				
-				| LPAREN:lp exps:el RPAREN
-				{: RESULT = new Absyn.SeqExp(lpleft, el); :}
+			/*	| LPAREN:lp exps:el RPAREN
+				{: RESULT = new Absyn.SeqExp(lpleft, el); :} */
+				
+				| LPAREN exp:e RPAREN
+				{: RESULT = e ; :}
 				
 				| exp:l AND exp:r
 				{: RESULT = new Absyn.OpExp(lleft, l, Absyn.OpExp.AND, r); :}
@@ -54,7 +57,7 @@ program ::= exp:e
 				{: RESULT = new Absyn.SimpleVar(ileft, Symbol.Symbol.symbol(i) ); :}
 				;
 
-		exps ::= exp:e
-				{: RESULT = new Absyn.ExpList(e , null); :}
-				 ;
+/*		exps ::= exp:e
+				{: RESULT = new Absyn.ExpList(e , null); :} 
+				 ;  */
 		
