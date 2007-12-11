@@ -1,9 +1,9 @@
 
 public class Delta {
 	String ime;
-	float vrednost;
+	double vrednost;
 	
-	public Delta(String ime, float vr){
+	public Delta(String ime, double vr){
 		this.ime=ime;
 		this.vrednost=vr;
 	}
@@ -12,7 +12,7 @@ public class Delta {
 		return this.ime;
 	}
 	
-	public float getVr(){
+	public double getVr(){
 		return this.vrednost;
 	}
 }

@@ -63,7 +63,7 @@ public class Okno extends javax.swing.JFrame {
 	private Absyn.Exp exp;
 	private String[] spremenljivke;
 	public	static String izraz;
-	private float[] verjetnosti=null;
+	private double[] verjetnosti=null;
 	private JSeparator jSeparator2;
 	private JSeparator jSeparator1;
 	private JLabel statusBar;
@@ -243,13 +243,13 @@ public class Okno extends javax.swing.JFrame {
 			filename = "izpis.txt";
 		}
 
-		verjetnosti = new float[spremenljivke.length];
+		verjetnosti = new double[spremenljivke.length];
 		zac_vr = new int[spremenljivke.length];
 
 		for(int i = 0; i < spremenljivke.length; i++){
 
 			try {
-				verjetnosti[i] = (float)Double.parseDouble(textFieldVer[i].getText());
+				verjetnosti[i] = Double.parseDouble(textFieldVer[i].getText());
 				if(verjetnosti[i] < 0 || verjetnosti[i] > 1 ){
 					JOptionPane.showMessageDialog(this, "Napacen vnos verjetnosti spremenljivke "+spremenljivke[i]+"!\n Verjetnost spremenljivke nesme biti vecja od 1 ali pa negativna", "Napacen vnos", JOptionPane.ERROR_MESSAGE);
 					ok = false;

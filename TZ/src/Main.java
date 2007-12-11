@@ -17,7 +17,7 @@ public class Main {
 			spremenljivke[i]=spremTmp;
 			i++;
 		}
-		float[] verjetnosti = { (float)0.5, (float)0.5, (float)0.5};
+		double[] verjetnosti = { (float)0.5, (float)0.5, (float)0.5};
 		int[]	zac_vr = { 1,1,0};
 		
 

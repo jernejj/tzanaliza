@@ -4,9 +4,11 @@ public class Test {
 	public static void main(String[] args) {
 		String izraz = "";
 		
+		System.out.println(0.48-0.5);
+		
 		String[] elements = {"x1", "x2", "x3", "x4", "x5"};
 		int[] indices;
-		CombinationGenerator x = new CombinationGenerator (elements.length, 1);
+		CombinationGenerator x = new CombinationGenerator (elements.length, 2);
 		StringBuffer combination;
 		System.out.println("vseh kom je: "+x.getTotal());
 		while (x.hasMore ()) {

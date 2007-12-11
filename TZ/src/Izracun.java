@@ -7,9 +7,9 @@ public class Izracun {
 	
 	private  Hashtable<String, Variable> variable;
 	private  String[] sprem;
-	private  float[] ver_sprem ; //verjetnost da je Xi=1
+	private  double[] ver_sprem ; //verjetnost da je Xi=1
 	private  int[] zac_vre ;
-	private  float apr_ver;
+	private  double apr_ver;
 	private  Absyn.OpExp opExp;
 	private  Vector<Delta> delte;
 	private  Vector<Interakcija> interakcije;
@@ -20,12 +20,12 @@ public class Izracun {
 	 * Konstruktor Izracun, izracuna delte, interakcije, ter prispevke spremenljivk. Kot argumente sprejme:
 	 * 
 	 * @param sprem tipa String[], vsebuje spremenljivke ki nastopajo v izrazu
-	 * @param verSprem tipa float[], vsebuje verjetnosti spremenljivke da je 1. Te verjetnosti si sledijko kot spremenljivke podane
+	 * @param verSprem tipa double[], vsebuje verjetnosti spremenljivke da je 1. Te verjetnosti si sledijko kot spremenljivke podane
 	 * v sprem. Se pravi verSprem[i]=P(sprem[i]=1)
 	 * @param zac_vrednosti tipa int[], vsebuje zacetne vrednosti spremenljivk, sledijo si po istem vrstnem redu kot sprem.
 	 * @param exp tipa Absyn.Exp, drevo ki ga vrne cup
 	 */	
-	public Izracun(String[] sprem, float[] verSprem, int[] zac_vrednosti, Absyn.Exp exp){
+	public Izracun(String[] sprem, double[] verSprem, int[] zac_vrednosti, Absyn.Exp exp){
 		this.ver_sprem = verSprem;
 		this.zac_vre = zac_vrednosti;
 		this.sprem = sprem;
@@ -261,16 +261,16 @@ public class Izracun {
 
 	
 	/**
-	 * Vrne apriorno vrednost logičnega izraza. Rezultat je tipa float
+	 * Vrne apriorno vrednost logičnega izraza. Rezultat je tipa double
 	 * 
 	 * @param node prvo vozlišče drevesa
-	 * @return rezultat tipa float, ki predstavlja apriorno verjetnost
+	 * @return rezultat tipa double, ki predstavlja apriorno verjetnost
 	 */
 	
-	private  float aprverjetnost(NodeOp nod){
+	private  double aprverjetnost(NodeOp nod){
 		NodeOp node = nod;
 		int st_spremenljivk = variable.size();
-		float rezultat = 0;
+		double rezultat = 0;
 		short[][] tabela = generate(st_spremenljivk);
 		int st_kom = tabela[0].length;			//stevilo kombinacij
 		int[] rez_verjetnosti = new int[st_kom];
@@ -278,7 +278,7 @@ public class Izracun {
 		//izracun verjetnosti za vse kombinacije
 		for(int rez_i = 0; rez_i < st_kom; rez_i++){
 			//nastavitev vrednosti spremenljivkam
-			float tmp_ver = 1;
+			double tmp_ver = 1;
 			for(int i=0; i<sprem.length; i++){
 				tmp_ver*= (tabela[i][rez_i] == 1 ) ? ver_sprem[i] : (1-ver_sprem[i]);
 				variable.get(sprem[i]).setValue(tabela[i][rez_i]);
@@ -293,7 +293,7 @@ public class Izracun {
 		
 		
 		
-		
+	//	System.out.println("aprVer: "+rezultat);
 		return rezultat;
 	}
 	
@@ -309,7 +309,7 @@ public class Izracun {
 		for(int i = 1; i <= sprem.length; i++){
 			st_dlt += binom(sprem.length, i);
 		}
-	//	float[] delte = new float[st_dlt];
+	//	double[] delte = new double[st_dlt];
 		
 	//	int poz=0;
 		for(int i = 1; i <= sprem.length; i++){
@@ -324,7 +324,12 @@ public class Izracun {
 					fiksirane.add(sprem[indeksi[k]]);
 					ime +=sprem[indeksi[k]];
 				}
-				Delta delta = new Delta(ime,izr_ver(fiksirane, node) -  apr_ver);
+				System.out.println("za delto: "+ime);
+				double tmp = izr_ver(fiksirane, node);
+				double tmp_rez = tmp - apr_ver;
+			//	System.out.println("apr ver: "+apr_ver);
+			//	System.out.println("delta je: "+tmp_rez);
+				Delta delta = new Delta(ime,tmp_rez);
 				delte.add(delta);
 			//	delte[poz] = izr_ver(fiksirane, node) -  apr_ver;
 			//	poz++;
@@ -341,14 +346,14 @@ public class Izracun {
 	 * @return rezultat delta'
 	 */
 	
-	private  float izr_ver(Vector<String> stat, NodeOp node){
+	private  double izr_ver(Vector<String> stat, NodeOp node){
 		int st_spremenljivk = variable.size()-stat.size();
-		float rezultat = 0;
+		double rezultat = 0;
 		
 		
 		int rez_verjetnosti;
 		String[] spremenljivke = new String[st_spremenljivk];
-		float[] tmp_ver_spr = new float[st_spremenljivk];
+		double[] tmp_ver_spr = new double[st_spremenljivk];
 		
 		/* spremenljivke ki ne fiksiramo si shranimo v zacasno tabelo spremenljivke, 
 		 * ter ob tem tudi njihove verjetnosti da je ta spremenljivka 1
@@ -379,22 +384,25 @@ public class Izracun {
 		//izracun verjetnosti za vse kombinacije
 		for(int rez_i = 0; rez_i < st_kom; rez_i++){
 			//nastavitev vrednosti spremenljivkam
-			float tmp_ver = 1;
+			double tmp_ver = 1.0;
 			for(int i=0; i<spremenljivke.length; i++){
-				
-				tmp_ver*= (tabela[i][rez_i] == 1 ) ? tmp_ver_spr[i] : (1-tmp_ver_spr[i]);
+			//	System.out.println("vr: "+tmp_ver_spr[i]);
+			//	System.out.println("vr-1: "+(1.0-tmp_ver_spr[i]));
+				tmp_ver*= (tabela[i][rez_i] == 1 ) ? tmp_ver_spr[i] : (1.0-tmp_ver_spr[i]);
 				variable.get(spremenljivke[i]).setValue(tabela[i][rez_i]);
+				
 				
 			}
 			rez_verjetnosti=izracunaj(node);
 			
 		//	System.out.println(rez_verjetnosti[rez_i]);
-			
+		//	System.out.println("zmnozek: "+tmp_ver);
 			rezultat += (rez_verjetnosti*tmp_ver);
+			
 				
 		}
 		
-		
+	//	System.out.println("rez: "+rezultat);
 		return rezultat;
 
 	}
@@ -412,7 +420,7 @@ public class Izracun {
 	
 	private  short[][] generate(int number) {
 		int n = number;
-		short[][] tabela = new short[n][(int)Math.pow((float)2,(float)n)];
+		short[][] tabela = new short[n][(int)Math.pow((double)2,(double)n)];
 		String bin="";
 
 		int indeks = 0;
@@ -446,7 +454,7 @@ public class Izracun {
 					spremTmp[j] = sprem[indeksi[j]];
 				}
 				
-				float vsotaI = (float)0.0;
+				double vsotaI = (double)0.0;
 				for(int k = 1; k < indeksi.length; k++){
 					CombinationGenerator cg = new CombinationGenerator(indeksi.length, k);
 					
@@ -460,7 +468,7 @@ public class Izracun {
 					}
 				}
 				
-				float vrInter = getDelta(ime).getVr() - vsotaI;
+				double vrInter = getDelta(ime).getVr() - vsotaI;
 				Interakcija inter = new Interakcija(ime, vrInter, indeksi.length);
 				interakcije.add(inter);
 				
@@ -475,9 +483,9 @@ public class Izracun {
 		for(int i = 0; i < sprem.length; i++){
 			String ime = sprem[i];
 			
-			float vrednost = (float)0.0;
+			double vrednost = (double)0.0;
 			Vector<Interakcija> inter = getInterContainIme(ime);
-			float[] tmpVrednost = new float[sprem.length];
+			double[] tmpVrednost = new double[sprem.length];
 			int[] tmpStevilo = new int[sprem.length];
 
 			for(Interakcija interTmp : inter){
@@ -486,7 +494,7 @@ public class Izracun {
 			}
 			
 			for(int j = 0; j < tmpStevilo.length; j++){
-				vrednost += tmpVrednost[j]/tmpStevilo[j];
+				vrednost += tmpVrednost[j]/(double)tmpStevilo[j];
 			}
 			
 			

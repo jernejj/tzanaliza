@@ -1,10 +1,10 @@
 
 public class Interakcija {
 	String ime;
-	float vrednost;
+	double vrednost;
 	int st_sprem;
 	
-	public Interakcija(String ime, float vr, int st){
+	public Interakcija(String ime, double vr, int st){
 		this.ime = ime;
 		this.vrednost = vr;
 		this.st_sprem = st;
@@ -14,7 +14,7 @@ public class Interakcija {
 		return this.ime;
 	}
 	
-	public float getVr(){
+	public double getVr(){
 		return this.vrednost;
 	}
 	
