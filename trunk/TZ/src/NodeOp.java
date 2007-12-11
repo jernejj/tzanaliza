@@ -5,13 +5,11 @@ public class NodeOp extends Node{
 	public NodeOp() {
 		this.left = null;
 		this.right = null;
-		this.parent = null;
 	}
 
 	public NodeOp(char op) {
 		this.left = null;
 		this.right = null;
-		this.parent = null;
 		this.op = new Operator(op);
 	}
 	

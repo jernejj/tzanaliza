@@ -5,20 +5,17 @@ public class NodeVar extends Node{
 	public NodeVar() {
 		this.left = null;
 		this.right = null;
-		this.parent = null;
 	}
 
 	public NodeVar(String var) {
 		this.left = null;
 		this.right = null;
-		this.parent = null;
 		this.var = new Variable(var);
 	}
 	
 	public NodeVar(Variable var){
 		this.left = null;
 		this.right = null;
-		this.parent = null;
 		this.var = var;
 	}
 	
@@ -45,13 +42,5 @@ public class NodeVar extends Node{
 	
 	public Node getRight() {
 		return this.right;
-	}	
-	
-	public void setParent(Node node) {
-		this.parent = node;
-	}
-	
-	public Node getParent() {
-		return this.parent;
 	}	
 }

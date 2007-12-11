@@ -1,5 +1,6 @@
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.text.DecimalFormat;
 
 /**
  * Objekt, ki vsebuje funkcijo za izpis delt, interakcij ter prispevkov
@@ -24,6 +25,8 @@ public class Izpis {
 	 */
 	public void izpisi(String filename){
 		
+		DecimalFormat myFormatter = new DecimalFormat("#######.#####");
+		
 		try {
 			FileWriter wfile = new FileWriter(filename);
 			BufferedWriter out = new BufferedWriter(wfile);
@@ -43,7 +46,7 @@ public class Izpis {
 			
 			out.newLine();
 			for(Interakcija interTmp : izracun.getInterakcija()){
-				out.write("I("+interTmp.getIme()+") = "+interTmp.getVr());
+				out.write("I("+interTmp.getIme()+") = "+myFormatter.format(interTmp.getVr()));
 				out.newLine();
 			}
 			

@@ -2,9 +2,9 @@
 public class Prispevek {
 	
 	String ime;
-	float vrednost;
+	double vrednost;
 	
-	public Prispevek(String ime, float vr){
+	public Prispevek(String ime, double vr){
 		this.ime = ime;
 		this.vrednost = vr;
 	}
@@ -13,7 +13,7 @@ public class Prispevek {
 		return this.ime;
 	}
 	
-	public float getVr(){
+	public double getVr(){
 		return this.vrednost;
 	}
 }
