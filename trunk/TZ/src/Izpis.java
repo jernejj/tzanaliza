@@ -46,7 +46,7 @@ public class Izpis {
 			
 			out.newLine();
 			for(Interakcija interTmp : izracun.getInterakcija()){
-				out.write("I("+interTmp.getIme()+") = "+myFormatter.format(interTmp.getVr()));
+				out.write("I("+interTmp.getIme()+") = "+interTmp.getVr());
 				out.newLine();
 			}
 			
