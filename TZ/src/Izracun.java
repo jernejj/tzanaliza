@@ -324,7 +324,7 @@ public class Izracun {
 					fiksirane.add(sprem[indeksi[k]]);
 					ime +=sprem[indeksi[k]];
 				}
-				System.out.println("za delto: "+ime);
+			//	System.out.println("za delto: "+ime);
 				double tmp = izr_ver(fiksirane, node);
 				double tmp_rez = tmp - apr_ver;
 			//	System.out.println("apr ver: "+apr_ver);
