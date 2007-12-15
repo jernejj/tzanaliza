@@ -20,7 +20,7 @@ public class Izpis {
 	}
 	
 	/**
-	 * Izpiše delte, interakcije ter prispevke Izracuna, kot parameter pa podamo ime datoteke
+	 * Izpiï¿½e delte, interakcije ter prispevke Izracuna, kot parameter pa podamo ime datoteke
 	 * @param filename tipa String
 	 */
 	public void izpisi(String filename){
@@ -31,8 +31,24 @@ public class Izpis {
 			FileWriter wfile = new FileWriter(filename);
 			BufferedWriter out = new BufferedWriter(wfile);
 			
-			out.write("Izracuni za izraz "+Okno.izraz);
+			out.write("Izracuni za izraz: "+Okno.izraz);
 			out.newLine();
+			out.newLine();
+			
+			out.write("Apriorne verjetnostni spremenljivk: ");
+			for(int i=0; i < Okno.spremenljivke.length; i++){
+				out.write("P("+Okno.spremenljivke[i]+"=1)="+Okno.verjetnosti[i]+" ");
+			}
+			
+			out.newLine();
+			out.newLine();
+			
+			
+			out.write("Zacetne vrednosti spremenljivk: ");
+			for(int i=0; i < Okno.spremenljivke.length; i++){
+				out.write(Okno.spremenljivke[i]+"="+Okno.zac_vr[i]+" ");
+			}
+			
 			out.newLine();
 			
 			out.write("Vrednost izraza je: "+izracun.izracunajVrednost());

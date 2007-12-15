@@ -1,6 +1,9 @@
 import com.cloudgarden.layout.AnchorConstraint;
 import com.cloudgarden.layout.AnchorLayout;
 
+import java.awt.Event;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JButton;
@@ -12,6 +15,7 @@ import javax.swing.JTextField;
 
 import javax.swing.WindowConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.border.BevelBorder;
 
 
 
@@ -61,20 +65,34 @@ public class Okno extends javax.swing.JFrame {
 	private JTextField jTextField1;
 
 	private Absyn.Exp exp;
-	private String[] spremenljivke;
-	public	static String izraz;
-	private double[] verjetnosti=null;
+	public static String[] spremenljivke;
+	public static String izraz;
+	public static double[] verjetnosti=null;
 	private JSeparator jSeparator2;
 	private JSeparator jSeparator1;
 	private JLabel statusBar;
 	private JButton izracun;
-	private int[]	zac_vr=null;
+	public static int[]	zac_vr=null;
 	private String filename=null;
+	private MouseAdapter M_AdapterZbrisiSB = new MouseAdapter() {
+		public void mouseClicked(MouseEvent evt) {
+			zbrisiStatusBarMouseClicked(evt);
+		}
+	};
+	
+	private KeyAdapter K_AdapterIzracunaj = new KeyAdapter() { 
+		public void keyPressed(KeyEvent evt){
+			if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+				izracunaj();
+			}
+		}
+	};
 
 	/**
 	 * Auto-generated main method to display this JFrame
 	 */
 	public static void main(String[] args) {
+		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				Okno inst = new Okno();
@@ -114,7 +132,7 @@ public class Okno extends javax.swing.JFrame {
 			jButton2.setPreferredSize(new java.awt.Dimension(129, 42));
 			jButton2.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent evt) {
-					jButton2MouseClicked(evt);
+					preberiIzraz();
 				}
 			});
 
@@ -122,7 +140,7 @@ public class Okno extends javax.swing.JFrame {
 		return jButton2;
 	}
 
-	private void jButton2MouseClicked(MouseEvent evt) { //button v glavnem oknu
+	private void preberiIzraz() { //button v glavnem oknu
 		boolean ok = true;
 		
 		statusBar.setText("");
@@ -159,17 +177,24 @@ public class Okno extends javax.swing.JFrame {
 					jPanel2.add(labelaSprem[i], new AnchorConstraint(111, 256+i*77, 260, 183+i*78, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
 					
 					textFieldVer[i] = new JTextField();
+					textFieldVer[i].setHorizontalAlignment(JTextField.CENTER);
 					textFieldVer[i].setText("0.5");
 					textFieldVer[i].setPreferredSize(new java.awt.Dimension(37, 34));
+					textFieldVer[i].addMouseListener( M_AdapterZbrisiSB );
+					textFieldVer[i].addKeyListener(K_AdapterIzracunaj);
+					
 					jPanel2.add(textFieldVer[i], new AnchorConstraint(287, 256+i*77, 436, 183+i*78, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
 					
 					textFieldVr[i] = new JTextField();
+					textFieldVr[i].setHorizontalAlignment(JTextField.CENTER);
 					textFieldVr[i].setPreferredSize(new java.awt.Dimension(37, 34));
+					textFieldVr[i].setDocument(new JTextFieldLimit(1));
+					textFieldVr[i].addMouseListener( M_AdapterZbrisiSB );
+					textFieldVr[i].addKeyListener(K_AdapterIzracunaj);
 					jPanel2.add(textFieldVr[i], new AnchorConstraint(462, 256+i*77, 611, 183+i*78, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
 					
 				}
-				
-				jPanel2.updateUI();			
+				jPanel2.updateUI();		
 				
 			}
 		}
@@ -195,6 +220,14 @@ public class Okno extends javax.swing.JFrame {
 			jTextField1.setToolTipText("Operatorji so: or and neg()");
 			jTextField1.setPreferredSize(new java.awt.Dimension(180, 46));
 			jTextField1.setFont(new java.awt.Font("Tahoma",0,12));
+			jTextField1.addMouseListener(M_AdapterZbrisiSB );
+			jTextField1.addKeyListener(new KeyAdapter() { 
+				public void keyPressed(KeyEvent evt){
+					if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+						preberiIzraz();
+					}
+				}
+			});
 		}
 		return jTextField1;
 	}
@@ -214,6 +247,7 @@ public class Okno extends javax.swing.JFrame {
 			jTextField2.setToolTipText("Vnesi ime datoteke, privzeto ime je izpis.txt");
 			jTextField2.setText("izpis.txt");
 			jTextField2.setPreferredSize(new java.awt.Dimension(115, 35));
+			jTextField2.addMouseListener(M_AdapterZbrisiSB);
 		}
 		return jTextField2;
 	}
@@ -236,7 +270,7 @@ public class Okno extends javax.swing.JFrame {
 		return jLabel4;
 	}
 
-	private void jButton1MouseClicked(MouseEvent evt) { //button v jdialog
+	private void izracunaj() { //button v jdialog
 		boolean ok = true;
 		filename = jTextField2.getText();
 		if(filename.isEmpty()){
@@ -306,6 +340,11 @@ public class Okno extends javax.swing.JFrame {
 	private void zbrisiMouseClicked(MouseEvent evt){
 		jTextField1.setText("");
 	}
+	
+	private void zbrisiStatusBarMouseClicked(MouseEvent evt){
+		statusBar.setText("");
+	}
+	
 
 	private JButton getIzhod() {
 		if(Izhod == null) {
@@ -372,7 +411,7 @@ public class Okno extends javax.swing.JFrame {
 			izracun.setPreferredSize(new java.awt.Dimension(127, 34));
 			izracun.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent evt) {
-					jButton1MouseClicked(evt);
+					izracunaj();
 				}
 			});
 		}
@@ -383,6 +422,7 @@ public class Okno extends javax.swing.JFrame {
 		if(statusBar == null) {
 			statusBar = new JLabel();
 			statusBar.setPreferredSize(new java.awt.Dimension(608, 20));
+			statusBar.setBorder(new BevelBorder(BevelBorder.LOWERED));
 		}
 		return statusBar;
 	}
