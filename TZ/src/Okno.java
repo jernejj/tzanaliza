@@ -173,6 +173,7 @@ public class Okno extends javax.swing.JFrame {
 				for(i = 0; i < stSprem; i++){
 					labelaSprem[i] = new JLabel();
 					labelaSprem[i].setText(spremenljivke[i]);
+					labelaSprem[i].setHorizontalAlignment(JLabel.CENTER);
 					labelaSprem[i].setPreferredSize(new java.awt.Dimension(38, 34));
 					jPanel2.add(labelaSprem[i], new AnchorConstraint(111, 256+i*77, 260, 183+i*78, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
 					
