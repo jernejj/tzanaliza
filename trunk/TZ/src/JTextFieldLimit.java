@@ -13,7 +13,7 @@
        throws BadLocationException {
     if (str == null) return;
 
-    if ((getLength() + str.length()) <= limit) {;
+    if ((getLength() + str.length()) <= limit && (str.equals("1") || str.equals("0")) ) {;
       super.insertString(offset, str, attr);
       }
     }
