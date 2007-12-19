@@ -16,7 +16,7 @@ public class Test {
 		}
 		
 		
-		double[] verjetnosti = { 0.4, 0.6, 0.5};
+		double[] verjetnosti = { 0.5, 0.5, 0.5};
 		short[][] zac_vrednosti = generate(spremenljivke.length);
 		int[] zacVr = new int[zac_vrednosti.length];
 		prispevek = new Prispevek[spremenljivke.length];
@@ -32,6 +32,7 @@ public class Test {
 			}
 			
 			Izracun izr = new Izracun(spremenljivke, verjetnosti, zacVr, parse.absyn );
+			System.out.println(izr.izracunajVrednost());
 			
 			for(Prispevek tmp : izr.getPrispevek()){
 				prispevek[getDelta(tmp.getIme())].vrednost += Math.abs(tmp.vrednost);
