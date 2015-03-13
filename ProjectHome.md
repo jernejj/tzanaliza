@@ -1,0 +1,2 @@
+Cilj seminarske naloge je izdelava aplikacije, ki bo omogocala razlago izbranega primera iz testne mnozice. Vhodni podatki so: ucna mnozica primerov, klasi-fikator (z morebitnimi parametri klasifikatorja) in mnozica testnih primerov, ki jih zelimo razloziti. Izhod je datoteka za vsak testni primer. Datoteka
+naj vsebuje prispevek vsakega izmed atributov, interakcije vseh podmnozic atributov ter pogojne verjetnosti vseh podmnozic atributov.
